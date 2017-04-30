@@ -18,8 +18,16 @@ public class Estimador{
     public int LowerBound(){
         return 0;
     }
+    public int EomLee(){
+        return 0;
+    }
 
     public int estimate(){
+        if(tipo.equals("LowerBound")){
+            return LowerBound();
+        }else if(tipo.equals("Eom-Lee")){
+            return EomLee();
+        }
         return 0;
     }
 
