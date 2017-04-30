@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Created by danil on 24/04/2017.
  */
-public class Estimador implements Runnable {
+public class Estimador{
     public int[] frame;
     public String tipo;
 
@@ -15,12 +15,27 @@ public class Estimador implements Runnable {
         this.tipo = tipo;
     }
 
-    public void LowerBound(){
-
+    public int LowerBound(){
+        return 0;
     }
 
-    @Override
-    public void run() {
+    public int estimate(){
+        return 0;
+    }
 
+    public int[] getFrame() {
+        return frame;
+    }
+
+    public void setFrame(int[] frame) {
+        this.frame = frame;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }
