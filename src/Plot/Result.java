@@ -7,7 +7,6 @@ public class Result {
 
     private double tempoMedio, svMedio,ssMedio,scMedio,framesMedio,slotsMedio;
     private int QTD_TAGS;
-    private String estimador;
     public Result(double tempoMedio, double svMedio,double ssMedio,double scMedio,double framesMedio,double slotsMedio, int QTD_TAGS, String estimador){
         this.tempoMedio = tempoMedio;
         this.svMedio = svMedio;
@@ -16,7 +15,10 @@ public class Result {
         this.framesMedio = framesMedio;
         this.slotsMedio = slotsMedio;
         this.QTD_TAGS = QTD_TAGS;
-        this.estimador = estimador;
+    }
+    
+    public double getTotalSlots() {
+    	return (this.ssMedio + this.svMedio + this.scMedio);
     }
 
     public double getTempoMedio() {
@@ -73,13 +75,5 @@ public class Result {
 
     public void setQTD_TAGS(int QTD_TAGS) {
         this.QTD_TAGS = QTD_TAGS;
-    }
-
-    public String getEstimador() {
-        return estimador;
-    }
-
-    public void setEstimador(String estimador) {
-        this.estimador = estimador;
     }
 }

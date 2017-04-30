@@ -1,8 +1,11 @@
 package Simulador;
 import Estimador.*;
+import Plot.FileName;
 import Plot.Result;
+import Plot.ResultGenerator;
 
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by danil on 24/04/2017.
@@ -26,8 +29,11 @@ public class DFSASimulator implements Runnable{
     private Result[] results;
     private Estimador estimador;
     private int tamanho_inicial_frame;
+    private LinkedBlockingQueue<FileName> filenames;
 
-    public DFSASimulator(int qtd_i_s, int qtd_i_t, int inc_passos, int passos, int qtd_sim_passo,int tamanho_inicial_frame,String tipo){
+    public DFSASimulator(int qtd_i_s, int qtd_i_t, 
+    		int inc_passos, int passos, int qtd_sim_passo,
+    		String tipo, LinkedBlockingQueue<FileName> filenames){
         this.QTD_INICIAL_SLOTS = qtd_i_s;
         this.QTD_INICIAL_TAGS = qtd_i_t;
         this.INC_PASSOS = inc_passos;
@@ -35,7 +41,7 @@ public class DFSASimulator implements Runnable{
         this.QTD_SIM_PASSO = qtd_sim_passo;
         this.frame = new int[10000];
         this.results = new Result[this.QTD_PASSOS];
-        this.tamanho_inicial_frame = tamanho_inicial_frame;
+        this.tamanho_inicial_frame = QTD_INICIAL_SLOTS;
         this.tamanho_frame = tamanho_inicial_frame;
         this.scCounter = new int[this.QTD_SIM_PASSO];
         this.svCounter = new int[this.QTD_SIM_PASSO];
@@ -46,6 +52,7 @@ public class DFSASimulator implements Runnable{
         this.rng = new Random();
         this.estimador = new Estimador(frame, tipo);
         this.QTD_TAGS_IDENTIFICADAS = 0;
+        this.filenames = filenames;
     }
 
 
@@ -115,6 +122,13 @@ public class DFSASimulator implements Runnable{
             //AQUI CALCULA A MEDIA DAS SIMULACOES
             this.QTD_INICIAL_TAGS += this.INC_PASSOS;
         }
+        
+        ResultGenerator rg = new ResultGenerator(estimador.getTipo(), results,
+        		QTD_INICIAL_SLOTS, 
+        		QTD_INICIAL_TAGS,
+        		QTD_PASSOS,
+        		QTD_SIM_PASSO);
+        rg.outputResults(filenames);
     }
 
     public int getQTD_INICIAL_SLOTS() {

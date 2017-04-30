@@ -1,8 +1,5 @@
 package Estimador;
 
-import java.util.HashMap;
-import java.util.Random;
-
 /**
  * Created by danil on 24/04/2017.
  */
