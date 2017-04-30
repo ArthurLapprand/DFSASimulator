@@ -1,5 +1,6 @@
 package Simulador;
 import Estimador.*;
+import Plot.Result;
 
 import java.util.Random;
 
@@ -22,6 +23,7 @@ public class DFSASimulator implements Runnable{
     private int[] frame;
     private long[] counterTime;
     private int tamanho_frame;
+    private Result[] results;
     private Estimador estimador;
     private int tamanho_inicial_frame;
 
@@ -32,6 +34,7 @@ public class DFSASimulator implements Runnable{
         this.QTD_PASSOS = passos;
         this.QTD_SIM_PASSO = qtd_sim_passo;
         this.frame = new int[10000];
+        this.results = new Result[this.QTD_PASSOS];
         this.tamanho_inicial_frame = tamanho_inicial_frame;
         this.tamanho_frame = tamanho_inicial_frame;
         this.scCounter = new int[this.QTD_SIM_PASSO];
@@ -107,7 +110,8 @@ public class DFSASimulator implements Runnable{
             scMedio = (double) scM/ (double)this.QTD_SIM_PASSO;
             framesMedio = (double) fM / (double)this.QTD_SIM_PASSO;
             slotsMedio = (double) sM / (double)this.QTD_SIM_PASSO;
-
+            Result r = new Result(tempoMedio,svMedio,ssMedio,scMedio,framesMedio,slotsMedio,this.QTD_INICIAL_TAGS, this.estimador.tipo);
+            results[i] = r;
             //AQUI CALCULA A MEDIA DAS SIMULACOES
             this.QTD_INICIAL_TAGS += this.INC_PASSOS;
         }
