@@ -17,6 +17,8 @@ public class DFSASimulator implements Runnable{
     private int[] counterFrames;
     private int[] counterSlots;
     private int[] frame;
+    private long[] counterTime;
+    private int tamanho_frame;
     private Estimador estimador;
     private int tamanho_inicial_frame;
 
@@ -26,10 +28,12 @@ public class DFSASimulator implements Runnable{
         this.INC_PASSOS = inc_passos;
         this.QTD_PASSOS = passos;
         this.QTD_SIM_PASSO = qtd_sim_passo;
-        this.frame = new int[tamanho_inicial_frame];
+        this.frame = new int[10000];
         this.tamanho_inicial_frame = tamanho_inicial_frame;
+        this.tamanho_frame = tamanho_inicial_frame;
         this.counterFrames = new int[this.QTD_SIM_PASSO];
         this.counterSlots = new int[this.QTD_SIM_PASSO];
+        this.counterTime = new long[this.QTD_SIM_PASSO];
         this.rng = new Random();
         this.estimador = new Estimador(frame, tipo);
         this.QTD_TAGS_IDENTIFICADAS = 0;
@@ -40,30 +44,38 @@ public class DFSASimulator implements Runnable{
     public void run() {
         for(int i =0; i< this.QTD_PASSOS; i++) {
             for(int j=0; j<this.QTD_SIM_PASSO;j++) {
+                this.counterTime[j] = System.currentTimeMillis();
                 this.QTD_TAGS_IDENTIFICADAS = 0;
                 this.frame = new int[tamanho_inicial_frame];
                 this.counterFrames[j] = 1;
-                this.counterSlots[j] = this.frame.length;
+                this.counterSlots[j] = this.tamanho_frame;
                 while (this.QTD_TAGS_IDENTIFICADAS < this.QTD_INICIAL_TAGS) {
                     for(int k=0;k<this.QTD_INICIAL_TAGS - this.QTD_TAGS_IDENTIFICADAS;k++){
-                        int randomNum = rng.nextInt(frame.length);
+                        int randomNum = rng.nextInt(tamanho_frame);
                         frame[randomNum]++;
                     }
-                    for(int k=0;k<this.frame.length;k++){
+                    int sc = 0,sv =0,ss = 0;
+                    for(int k=0;k<this.tamanho_frame;k++){
                         if(frame[k]==1){
                             this.QTD_TAGS_IDENTIFICADAS++;
+                            ss++;
+                        }else if(frame[k]==0){
+                            sv++;
+                        }else{
+                            sc++;
                         }
                     }
                     if(!(this.QTD_TAGS_IDENTIFICADAS == this.QTD_INICIAL_TAGS)){
                         estimador.setFrame(this.frame);
-                        int nextFrameSize = estimador.estimate();
-                        this.frame = new int[nextFrameSize];
+                        double frameSize = Math.ceil(estimador.estimate(this.tamanho_frame,sc,sv,ss));
+                        int nextFrameSize = (int) frameSize;
                         this.counterFrames[j]++;
-                        this.counterSlots[j]+=this.frame.length;
+                        this.counterSlots[j]+=this.tamanho_frame;
                     }
                 }
+                this.counterTime[j] -= System.currentTimeMillis();
             }
-            //AQUI CALCULO A MEDIA DAS SIMULAÇOES
+            //AQUI CALCULO A MEDIA DAS SIMULAÇOES, COLOCA EM ALGUM LUGAR , E PLOTTA
             //AQUI CALCULA A MEDIA DAS SIMULACOES
             this.QTD_INICIAL_TAGS += this.INC_PASSOS;
         }
