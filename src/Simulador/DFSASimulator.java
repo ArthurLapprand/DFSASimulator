@@ -62,7 +62,7 @@ public class DFSASimulator implements Runnable{
             for(int j=0; j<this.QTD_SIM_PASSO;j++) {
                 this.counterTime[j] = System.currentTimeMillis();
                 this.QTD_TAGS_IDENTIFICADAS = 0;
-                this.frame = new int[tamanho_inicial_frame];
+                //this.frame = new int[tamanho_inicial_frame];
                 this.counterFrames[j] = 1;
                 this.counterSlots[j] = this.tamanho_frame;
                 while (this.QTD_TAGS_IDENTIFICADAS < this.QTD_INICIAL_TAGS) {
