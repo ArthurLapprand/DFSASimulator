@@ -15,18 +15,32 @@ public class Estimador{
         this.tipo = tipo;
     }
 
-    public int LowerBound(){
-        return 0;
+    public int LowerBound(int tamanho_frame,int sc,int sv,int ss){
+      
+        return sc * 2;
     }
-    public int EomLee(){
-        return 0;
+    public double EomLee(int tamanho_frame,int sc,int sv,int ss){
+            double dTamanho_frame = tamanho_frame;
+            double beta, oldGama, num, den, frac;
+            double newGama = 2.0;
+            do {
+                oldGama = newGama;
+                beta = dTamanho_frame / ((oldGama * sc) + ss);
+                frac = Math.exp(-(1.0 / beta));
+                num = (1.0 - frac);
+                den = (beta * (1.0 - (1.0 + (1.0 / beta)) * frac));
+                newGama = num / den;
+            } while (Math.abs(oldGama - newGama) >= 0.001);
+            //mult++;
+            //if (Double.isNaN(newGamma * sc)) System.out.println("newGamma = " + newGamma + "sc = " + sc);
+            return newGama * sc;
     }
 
-    public int estimate(){
+    public double estimate(int tamanho_frame, int sc, int sv, int ss){
         if(tipo.equals("LowerBound")){
-            return LowerBound();
+            return LowerBound(tamanho_frame,sc,sv,ss);
         }else if(tipo.equals("Eom-Lee")){
-            return EomLee();
+            return EomLee(tamanho_frame,sc,sv,ss);
         }
         return 0;
     }
