@@ -14,7 +14,8 @@ public class DFSASimulator implements Runnable{
     private int QTD_TAGS_IDENTIFICADAS;
     private int QTD_SIM_PASSO;//Qtd de simulações por passo
     private Random rng;
-    private int counterFrames;
+    private int[] counterFrames;
+    private int[] counterSlots;
     private int[] frame;
     private Estimador estimador;
     private int tamanho_inicial_frame;
@@ -27,7 +28,8 @@ public class DFSASimulator implements Runnable{
         this.QTD_SIM_PASSO = qtd_sim_passo;
         this.frame = new int[tamanho_inicial_frame];
         this.tamanho_inicial_frame = tamanho_inicial_frame;
-        this.counterFrames = 1;
+        this.counterFrames = new int[this.QTD_SIM_PASSO];
+        this.counterSlots = new int[this.QTD_SIM_PASSO];
         this.rng = new Random();
         this.estimador = new Estimador(frame, tipo);
         this.QTD_TAGS_IDENTIFICADAS = 0;
@@ -40,6 +42,8 @@ public class DFSASimulator implements Runnable{
             for(int j=0; j<this.QTD_SIM_PASSO;j++) {
                 this.QTD_TAGS_IDENTIFICADAS = 0;
                 this.frame = new int[tamanho_inicial_frame];
+                this.counterFrames[j] = 1;
+                this.counterSlots[j] = this.frame.length;
                 while (this.QTD_TAGS_IDENTIFICADAS < this.QTD_INICIAL_TAGS) {
                     for(int k=0;k<this.QTD_INICIAL_TAGS - this.QTD_TAGS_IDENTIFICADAS;k++){
                         int randomNum = rng.nextInt(frame.length);
@@ -54,9 +58,13 @@ public class DFSASimulator implements Runnable{
                         estimador.setFrame(this.frame);
                         int nextFrameSize = estimador.estimate();
                         this.frame = new int[nextFrameSize];
+                        this.counterFrames[j]++;
+                        this.counterSlots[j]+=this.frame.length;
                     }
                 }
             }
+            //AQUI CALCULO A MEDIA DAS SIMULAÇOES
+            //AQUI CALCULA A MEDIA DAS SIMULACOES
             this.QTD_INICIAL_TAGS += this.INC_PASSOS;
         }
     }
@@ -109,11 +117,11 @@ public class DFSASimulator implements Runnable{
         this.rng = rng;
     }
 
-    public int getCounterFrames() {
+    public int[] getCounterFrames() {
         return counterFrames;
     }
 
-    public void setCounterFrames(int counterFrames) {
+    public void setCounterFrames(int[] counterFrames) {
         this.counterFrames = counterFrames;
     }
 
