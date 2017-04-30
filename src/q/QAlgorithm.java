@@ -11,8 +11,9 @@ public class QAlgorithm{
 		double Q = 4, Qfp = 4, Cq = 0.2, num =0;
 		double frameEnd = Math.pow(2.0, Q);
 
-		for(int z=1; z<=1000; z+=100){
-			
+		for(int z=1; z<=1001; z+=100){
+			if (z!=1)
+				z--;
 			for(int k =0; k <2000; k++){
 				totalSlots =0;
 				int n = z;
@@ -21,7 +22,7 @@ public class QAlgorithm{
 					arrayLimiter = (int) frameEnd;
 
 					// Apply random tag inputs in the frame
-					for (i = 0; i < z; i++) {
+					for (i = 0; i < n; i++) {
 						int t = r.nextInt(arrayLimiter);
 						//					System.out.println("random"+t);
 						if(t==0)
@@ -51,7 +52,7 @@ public class QAlgorithm{
 				
 //				System.out.println(totalSlots+" num : "+num);
 			}
-			System.out.println(num);
+			System.out.println(z+" = "+num);
 			num =0;
 		}
 	}
