@@ -33,7 +33,7 @@ public class ScriptGenerator {
 		String plotString = ("plot ");		
 		for (Iterator<FileName> iterator = this.filenames.iterator(); iterator.hasNext();) {
 			FileName names = (FileName) iterator.next();
-			plotString += "\"" + names.getFilename() + "\" u 1:2 t '" + names.getEstimator() + "' w lines, " + "\\";
+			plotString += "\"" + names.getFilename() + "\" u 1:2 t '" + names.getEstimator() + "' w linespoints, " + "\\";
 		}
 		lines.add(plotString);		
 		
