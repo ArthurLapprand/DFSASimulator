@@ -33,10 +33,10 @@ public class ResultGenerator {
 	
 	public void outputResults(LinkedBlockingQueue<FileName> filenames) {
 		List<String> lines = new ArrayList<String>();
-		String filename = this.estimador + "-" +
-				this.qTD_INICIAL_SLOTS + "-" +
-				this.qTD_INICIAL_TAGS + "-" +
-				this.qTD_PASSOS + "-" +
+		String filename = this.estimador + "_" +
+				this.qTD_INICIAL_SLOTS + "_" +
+				this.qTD_INICIAL_TAGS + "_" +
+				this.qTD_PASSOS + "_" +
 				this.qTD_SIM_PASSO +
 				".txt";
 		FileName fn = new FileName(this.estimador, filename);
